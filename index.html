@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tsion-Aduesa — Actuarial & Finance</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --white: #ffffff;
+      --blush: #fdf0f4;
+      --blush-mid: #f9dde7;
+      --rose: #e8a0b4;
+      --rose-dark: #c9637e;
+      --rose-deep: #a3405a;
+      --ink: #1e1018;
+      --muted: #8a6672;
+      --line: #f0d8e0;
+      --serif: 'Playfair Display', Georgia, serif;
+      --sans: 'Jost', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--white);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 5rem;
+      background: rgba(255,255,255,0.94);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .nav-logo em { font-style: italic; color: var(--rose-dark); }
+
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+
+    .nav-links a {
+      font-family: var(--sans);
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--rose-deep); }
+
+    /* HERO */
+    #hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      align-items: center;
+      padding: 7rem 5rem 5rem;
+      gap: 4rem;
+      background: linear-gradient(155deg, var(--white) 58%, var(--blush) 100%);
+    }
+
+    .hero-eyebrow {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--rose-dark);
+      margin-bottom: 1.4rem;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.1s forwards;
+    }
+
+    .hero-name {
+      font-family: var(--serif);
+      font-size: clamp(3.2rem, 5.5vw, 5.5rem);
+      font-weight: 400;
+      line-height: 1.05;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.22s forwards;
+    }
+
+    .hero-name em { font-style: italic; color: var(--rose-dark); }
+
+    .hero-tagline {
+      margin-top: 1.6rem;
+      font-size: 1.05rem;
+      color: var(--muted);
+      font-weight: 300;
+      max-width: 440px;
+      line-height: 1.8;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.36s forwards;
+    }
+
+    .hero-cta {
+      margin-top: 2.8rem;
+      display: flex;
+      gap: 1rem;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.5s forwards;
+    }
+
+    .btn {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 0.8rem 2rem;
+      transition: all 0.2s;
+    }
+
+    .btn-primary { background: var(--rose-deep); color: var(--white); }
+    .btn-primary:hover { background: var(--rose-dark); }
+    .btn-ghost { border: 1px solid var(--line); color: var(--muted); }
+    .btn-ghost:hover { border-color: var(--rose); color: var(--rose-deep); }
+
+    .hero-right {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.55s forwards;
+    }
+
+    .stat-card {
+      background: var(--white);
+      border: 1px solid var(--line);
+      padding: 1.4rem 1.8rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .stat-card:hover {
+      border-color: var(--rose);
+      box-shadow: 0 2px 16px rgba(200,99,126,0.07);
+    }
+
+    .stat-label {
+      font-size: 0.6rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--rose-dark);
+    }
+
+    .stat-value {
+      font-family: var(--serif);
+      font-size: 1.45rem;
+      color: var(--ink);
+    }
+
+    .stat-sub { font-size: 0.82rem; color: var(--muted); }
+
+    /* SECTIONS */
+    section { padding: 7rem 5rem; }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 1.2rem;
+      margin-bottom: 4rem;
+    }
+
+    .section-num {
+      font-size: 0.62rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      color: var(--rose-dark);
+    }
+
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 3.2vw, 2.8rem);
+      font-weight: 400;
+    }
+
+    /* ABOUT */
+    #about { background: var(--blush); border-top: 1px solid var(--line); }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+    }
+
+    .about-body { font-size: 1.05rem; color: var(--muted); line-height: 1.9; }
+    .about-body p + p { margin-top: 1.1em; }
+    .about-body strong { color: var(--ink); font-weight: 500; }
+
+    .detail-row {
+      padding: 1.1rem 0;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .detail-row:first-child { border-top: 1px solid var(--line); }
+
+    .detail-label {
+      font-size: 0.6rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--rose-dark);
+    }
+
+    .detail-value { font-size: 0.92rem; }
+
+    /* PROJECTS */
+    #projects { border-top: 1px solid var(--line); }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .project-card {
+      border: 1px solid var(--line);
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+      transition: border-color 0.2s, transform 0.22s;
+    }
+
+    .project-card:hover { border-color: var(--rose); transform: translateY(-3px); }
+
+    .project-tag {
+      font-size: 0.6rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--rose-dark);
+    }
+
+    .project-title {
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      font-weight: 400;
+      line-height: 1.3;
+    }
+
+    .project-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.75; flex: 1; }
+
+    .project-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.3rem; }
+
+    .tag {
+      font-size: 0.58rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--rose-deep);
+      background: var(--blush);
+      border: 1px solid var(--line);
+      padding: 0.2rem 0.65rem;
+    }
+
+    /* EXAM UPDATES */
+    #updates { background: var(--blush); border-top: 1px solid var(--line); }
+
+    .updates-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    .skills-label {
+      font-size: 0.6rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding-bottom: 0.7rem;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .exam-tracker { display: flex; flex-direction: column; gap: 0.8rem; }
+
+    .exam-row {
+      background: var(--white);
+      border: 1px solid var(--line);
+      padding: 1.1rem 1.4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: border-color 0.2s;
+    }
+
+    .exam-row:hover { border-color: var(--rose); }
+
+    .exam-info { display: flex; flex-direction: column; gap: 0.15rem; }
+    .exam-name { font-size: 0.92rem; font-weight: 500; }
+    .exam-org { font-size: 0.58rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+
+    .badge {
+      font-size: 0.56rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.22rem 0.7rem;
+      border: 1px solid;
+    }
+
+    .badge-prep { color: var(--rose-deep); border-color: var(--rose); background: var(--blush); }
+    .badge-pass { color: #3b6e4a; border-color: #8fcea8; background: #eaf4ee; }
+    .badge-planned { color: var(--muted); border-color: var(--line); background: var(--white); }
+
+    .updates-feed { display: flex; flex-direction: column; }
+
+    .update-entry {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 1.5rem;
+      padding: 1.5rem 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .update-entry:first-child { border-top: 1px solid var(--line); }
+
+    .update-date {
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--rose-dark);
+      padding-top: 0.1rem;
+    }
+
+    .update-content { display: flex; flex-direction: column; gap: 0.3rem; }
+
+    .update-title {
+      font-family: var(--serif);
+      font-size: 1.05rem;
+      font-weight: 400;
+    }
+
+    .update-body { font-size: 0.87rem; color: var(--muted); line-height: 1.7; }
+
+    .update-pill {
+      display: inline-block;
+      font-size: 0.55rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.15rem 0.6rem;
+      color: var(--rose-deep);
+      background: var(--blush-mid);
+      margin-top: 0.3rem;
+      width: fit-content;
+    }
+
+    /* RESUME */
+    #resume { border-top: 1px solid var(--line); }
+
+    .resume-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+    }
+
+    .skills-block + .skills-block { margin-top: 2.5rem; }
+
+    .skill-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.65rem 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .skill-name { font-size: 0.9rem; }
+    .skill-bar { width: 72px; height: 2px; background: var(--line); position: relative; }
+    .skill-fill { position: absolute; top: 0; left: 0; height: 100%; background: var(--rose-dark); }
+
+    /* CONTACT */
+    #contact { background: var(--ink); border-top: none; }
+    #contact .section-num { color: var(--rose); }
+    #contact .section-title { color: var(--white); }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+    }
+
+    .contact-blurb { font-size: 1.05rem; color: rgba(255,255,255,0.45); line-height: 1.8; }
+
+    .contact-links { display: flex; flex-direction: column; gap: 0.7rem; }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      text-decoration: none;
+      color: var(--white);
+      font-size: 0.9rem;
+      padding: 1rem 1.4rem;
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .contact-link:hover { border-color: var(--rose); background: rgba(232,160,180,0.07); }
+
+    .contact-link-label {
+      font-size: 0.58rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--rose);
+      width: 60px;
+      flex-shrink: 0;
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--ink);
+      padding: 1.8rem 5rem;
+      border-top: 1px solid rgba(255,255,255,0.07);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    footer span {
+      font-size: 0.6rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.22);
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+
+    .reveal.visible { opacity: 1; transform: none; }
+
+    @media (max-width: 900px) {
+      nav { padding: 1.1rem 1.5rem; }
+      .nav-links { gap: 1.2rem; }
+      #hero, section { padding-left: 1.5rem; padding-right: 1.5rem; }
+      #hero { grid-template-columns: 1fr; padding-top: 7rem; }
+      .about-grid, .projects-grid, .updates-layout, .resume-grid, .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+      footer { flex-direction: column; gap: 0.4rem; padding: 1.4rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="#hero" class="nav-logo">Tsion-Aduesa <em>Smart</em></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#updates">Updates</a></li>
+    <li><a href="#resume">Resume</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section id="hero">
+  <div>
+    <p class="hero-eyebrow">Actuarial Science · Finance · Statistics</p>
+    <h1 class="hero-name">Tsion-Aduesa<br><em>Smart</em></h1>
+    <p class="hero-tagline">UC Berkeley student bridging mathematics, risk, and the real world.</p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn btn-primary">View Projects</a>
+      <a href="#contact" class="btn btn-ghost">Get in Touch</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="stat-card">
+      <span class="stat-label">Exam in Progress</span>
+      <span class="stat-value">SOA Exam FM</span>
+      <span class="stat-sub">Financial Mathematics — April 2026</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Institution</span>
+      <span class="stat-value">UC Berkeley</span>
+      <span class="stat-sub">Statistics & Actuarial Science</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Focus Areas</span>
+      <span class="stat-value">Risk · Data · Finance</span>
+      <span class="stat-sub">Econometrics, financial math, loss reserving</span>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="section-header reveal">
+    <span class="section-num">01</span>
+    <h2 class="section-title">About Me</h2>
+  </div>
+  <div class="about-grid">
+    <div class="about-body reveal">
+      <p>I'm a second-year at UC Berkeley studying statistics with a focus on <strong>actuarial science and financial mathematics</strong>. I'm drawn to where rigorous quantitative reasoning meets real-world decisions through insurance pricing, pension design, and risk modeling.</p>
+      <p>Outside of coursework, I'm involved in <strong>Stat Scholars</strong>, SSRP research, Financial Mathematics club, and ASUC All Staff. I also mentor students in math, which keeps me grounded in the fundamentals.</p>
+      <p>When I'm not drilling FM practice problems or debugging Python pipelines, you'll find me at the gym.</p>
+    </div>
+    <div class="reveal">
+      <div class="detail-row">
+        <span class="detail-label">University</span>
+        <span class="detail-value">University of California, Berkeley</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Coursework</span>
+        <span class="detail-value">Econometrics (Econ 141) · Probability (Stat 134) · Abstract Algebra (Math 113)</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Involvement</span>
+        <span class="detail-value">Stat Scholars · SSRP · ASUC OSTR · CAL Actuarial League</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Mentorship</span>
+        <span class="detail-value">Math Peer Mentor and Tutor, Transfer Mentor</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Exam Path</span>
+        <span class="detail-value">SOA Exam P · SOA Exam FM (in progress)</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="section-header reveal">
+    <span class="section-num">02</span>
+    <h2 class="section-title">Projects</h2>
+  </div>
+  <div class="projects-grid">
+    <div class="project-card reveal">
+      <span class="project-tag">Actuarial · Case Competition</span>
+      <h3 class="project-title">Dental Insurance IBNP Estimation</h3>
+      <p class="project-desc">Actuarial case competition modeling incurred-but-not-paid claims for a dental insurer. Led the Projected Paid Lag method. Team concluded with a prior ELR of ~72% and recommended Bornhuetter-Ferguson given rapid premium growth.</p>
+      <div class="project-tags">
+        <span class="tag">R</span><span class="tag">Loss Reserving</span><span class="tag">B-F Method</span><span class="tag">IBNP</span>
+      </div>
+    </div>
+    <div class="project-card reveal">
+      <span class="project-tag">Research · NLP</span>
+      <h3 class="project-title">Vaccine Media Coverage Analysis</h3>
+      <p class="project-desc">SSRP research analyzing ~226,000 ProQuest newspaper articles on vaccine media coverage across COVID-19 timeline periods. Built Python and Selenium pipelines with OCR fallback via pytesseract for scanned PDFs.</p>
+      <div class="project-tags">
+        <span class="tag">Python</span><span class="tag">Selenium</span><span class="tag">OCR</span><span class="tag">NLP</span>
+      </div>
+    </div>
+    <div class="project-card reveal">
+      <span class="project-tag">Econometrics</span>
+      <h3 class="project-title">OLS Regression & Labor Economics</h3>
+      <p class="project-desc">Applied OLS and asymptotic theory to wage datasets — examining omitted variable bias, interaction terms, and log-linear models. Used correlation tables as empirical evidence of confounding as part of Econ 141 coursework.</p>
+      <div class="project-tags">
+        <span class="tag">R</span><span class="tag">OLS</span><span class="tag">Econometrics</span><span class="tag">Frisch-Waugh</span>
+      </div>
+    </div>
+    <div class="project-card reveal">
+      <span class="project-tag">Financial Mathematics</span>
+      <h3 class="project-title">Bond & Immunization Modeling</h3>
+      <p class="project-desc">Independent study project covering callable bond pricing, Macaulay and modified duration, convexity, and Redington immunization. Built intuition for asset-liability matching through systematic FM exam preparation.</p>
+      <div class="project-tags">
+        <span class="tag">Duration</span><span class="tag">Convexity</span><span class="tag">Immunization</span><span class="tag">SOA FM</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="updates">
+  <div class="section-header reveal">
+    <span class="section-num">03</span>
+    <h2 class="section-title">Exam Updates</h2>
+  </div>
+  <div class="updates-layout">
+    <div class="reveal">
+      <span class="skills-label">SOA Exam Progress</span>
+      <div class="exam-tracker">
+        <div class="exam-row">
+          <div class="exam-info">
+            <span class="exam-name">Exam P — Probability</span>
+            <span class="exam-org">Society of Actuaries</span>
+          </div>
+          <span class="badge badge-planned">Planned</span>
+        </div>
+        <div class="exam-row">
+          <div class="exam-info">
+            <span class="exam-name">Exam FM — Financial Math</span>
+            <span class="exam-org">Society of Actuaries</span>
+          </div>
+          <span class="badge badge-prep">In Prep ✦</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="updates-feed reveal">
+      <div class="update-entry">
+        <span class="update-date">Apr 2026</span>
+        <div class="update-content">
+          <span class="update-title">Sitting Exam FM</span>
+          <p class="update-body">Taking the SOA Financial Mathematics exam. Final prep focused on timed full-length practice sets, immunization edge cases, and callable bond pricing review.</p>
+          <span class="update-pill">FM · Upcoming</span>
+        </div>
+      </div>
+      <div class="update-entry">
+        <span class="update-date">Mar 2025</span>
+        <div class="update-content">
+          <span class="update-title">Immunization & Duration</span>
+          <p class="update-body">Wrapped up Redington immunization, full immunization, and convexity. These clicked after working through the relationship between asset/liability cash flow matching and interest rate sensitivity.</p>
+          <span class="update-pill">FM · Study Notes</span>
+        </div>
+      </div>
+      <div class="update-entry">
+        <span class="update-date">Feb 2025</span>
+        <div class="update-content">
+          <span class="update-title">Bonds & Loan Amortization</span>
+          <p class="update-body">Finished bond pricing (including callable bonds and yield-to-call), the book value schedule, and loan amortization tables. Callable bonds were the trickiest as we know premium vs. discount behavior depending on which call date is cheapest to deliver.</p>
+          <span class="update-pill">FM · Study Notes</span>
+        </div>
+      </div>
+      <div class="update-entry">
+        <span class="update-date">Jan 2025</span>
+        <div class="update-content">
+          <span class="update-title">Started Exam FM Prep</span>
+          <p class="update-body">Began structured FM prep using Infinite Actuaries. Working through time value of money, annuities, and force of interest — building up to bonds and derivatives.</p>
+          <span class="update-pill">FM · Started</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="resume">
+  <div class="section-header reveal">
+    <span class="section-num">04</span>
+    <h2 class="section-title">Resume & Skills</h2>
+  </div>
+  <div class="resume-grid">
+    <div class="reveal">
+      <div class="skills-block">
+        <span class="skills-label">Technical Skills</span>
+        <div class="skill-item"><span class="skill-name">R / Statistical Computing</span><div class="skill-bar"><div class="skill-fill" style="width:80%"></div></div></div>
+        <div class="skill-item"><span class="skill-name">Python</span><div class="skill-bar"><div class="skill-fill" style="width:79%"></div></div></div>
+        <div class="skill-item"><span class="skill-name">Econometrics / OLS</span><div class="skill-bar"><div class="skill-fill" style="width:78%"></div></div></div>
+        <div class="skill-item"><span class="skill-name">Web Scraping & Pipelines</span><div class="skill-bar"><div class="skill-fill" style="width:75%"></div></div></div>
+        <div class="skill-item"><span class="skill-name">Monte Carlo Simulation</span><div class="skill-bar"><div class="skill-fill" style="width:50%"></div></div></div>
+      </div>
+      <div class="skills-block">
+        <span class="skills-label">Actuarial & Finance</span>
+        <div class="skill-item"><span class="skill-name">Loss Reserving (IBNP)</span><div class="skill-bar"><div class="skill-fill" style="width:78%"></div></div></div>
+        <div class="skill-item"><span class="skill-name">Bond Pricing & Duration</span><div class="skill-bar"><div class="skill-fill" style="width:85%"></div></div></div>
+        <div class="skill-item"><span class="skill-name">Probability Theory</span><div class="skill-bar"><div class="skill-fill" style="width:86%"></div></div></div>
+        <div class="skill-item"><span class="skill-name">Financial Mathematics</span><div class="skill-bar"><div class="skill-fill" style="width:83%"></div></div></div>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="skills-block">
+        <span class="skills-label">Education</span>
+        <div class="detail-row">
+          <span class="detail-label">Degree</span>
+          <span class="detail-value">B.A. Statistics — UC Berkeley, Expected 2027</span>
+          <span class="detail-value">A.A for Transfer. Mathematics — San Diego Mesa College, 2023-25</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Key Courses</span>
+          <span class="detail-value">Econometrics · Probability Theory · Abstract Algebra · Financial Mathematics, Abstract Linear Algebra, Introduction to Julia Programming</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Activities</span>
+          <span class="detail-value">Stat Scholars · SSRP · ASUC · CAL Actuarial League </span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Mentorship</span>
+          <span class="detail-value">Math Peer Mentor, Transfer Mentor — Community College</span>
+        </div>
+      </div>
+      <div class="skills-block">
+        <span class="skills-label">Actuarial Credentials</span>
+        <div class="exam-tracker">
+          <div class="exam-row" style="background:var(--blush)">
+            <div class="exam-info">
+              <span class="exam-name">Exam FM</span>
+              <span class="exam-org">Society of Actuaries</span>
+            </div>
+            <span class="badge badge-prep">In Prep</span>
+          </div>
+          <div class="exam-row" style="background:var(--blush)">
+            <div class="exam-info">
+              <span class="exam-name">Exam P</span>
+              <span class="exam-org">Society of Actuaries</span>
+            </div>
+            <span class="badge badge-planned">Planned</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="section-header reveal">
+    <span class="section-num">05</span>
+    <h2 class="section-title">Get in Touch</h2>
+  </div>
+  <div class="contact-grid">
+    <div class="contact-blurb reveal">
+      <p>Open to actuarial internships, research collaborations, and conversations about financial mathematics, risk modeling, or statistics. Feel free to reach out.</p>
+    </div>
+    <div class="contact-links reveal">
+      <a href="mailto:tsi.adu.smart@gmail.com" class="contact-link">
+        <span class="contact-link-label">Email</span>
+        tsi.adu.smart@gmail.com
+      </a>
+      <a href="https://linkedin.com/in/tsion-aduesa-smart24" target="_blank" class="contact-link">
+        <span class="contact-link-label">LinkedIn</span>
+        linkedin.com/in/tsion-aduesa-smart24
+      </a>
+      <a href="https://github.com/peaxhuu" target="_blank" class="contact-link">
+        <span class="contact-link-label">GitHub</span>
+        github.com/peaxhuu
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 Tsion-Aduesa Smart</span>
+  <span>UC Berkeley · Actuarial Science</span>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 90);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
